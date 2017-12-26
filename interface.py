@@ -31,7 +31,6 @@ class Application(Frame):
             self.draw_form(form, colors[color_index])
             color_index += 1
             color_index %= len(colors)
-            print(color_index)
 
 
 if __name__ == '__main__':

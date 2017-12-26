@@ -1,5 +1,5 @@
-import unittest
-import cubes
+from unittest import TestCase
+from node import *
 
 cube_orig = [
     [[True, True, True, True, True, True], [True, True, True, True, True, True], [True, True, True, True, True, True],
@@ -21,7 +21,7 @@ cube_orig = [
      [True, True, True, True, True, True], [True, True, True, True, True, True],
      [True, True, True, True, True, True]]]
 cube_size = 6
-node_orig = cubes.Node(cube_orig, [])
+#node_orig = Node(cube_orig, [])
 
 cube_test = [
     [[True, False, True], [True, True, True], [True, True, True]],
@@ -30,22 +30,24 @@ cube_test = [
 cube_test_size = 3
 
 
-class MyTestCase(unittest.TestCase):
-    def test_something(self):
-        self.assertEqual(True, True)
+class TestNode(TestCase):
+    def test_generate_t(self):
+        print("generate simple T")
+        node = Node(cube_orig, [])
 
-    def test_free_in_cube(self):
-        self.assertTrue(cubes.free_in_cube(cubes.Position(0, 0, 0), cube_test))
-        self.assertFalse(cubes.free_in_cube(cubes.Position(0, 0, 1), cube_test))
-        self.assertTrue(cubes.free_in_cube(cubes.Position(2, 2, 2), cube_test))
-        self.assertFalse(cubes.free_in_cube(cubes.Position(-1, 0, 0), cube_test))
-        self.assertFalse(cubes.free_in_cube(cubes.Position(0, -1, 0), cube_test))
-        self.assertFalse(cubes.free_in_cube(cubes.Position(0, 0, -1), cube_test))
-        self.assertFalse(cubes.free_in_cube(cubes.Position(cube_test_size, 0, 1), cube_test))
+        piece = node.generate_t(Position(0, 0, 0), 0, 0)
+        self.assertEqual(None, piece)
+
+        piece = node.generate_t(Position(0, 0, 0), 1, 0)
+        self.assertEqual(None, piece)
+
+        piece = node.generate_t(Position(0, 0, 0), 1, 1)
+        print(" TODO: ", piece)
 
     def test_add_pos(self):
+        node_orig = Node(cube_orig, [])
         tab = []
-        cubes.add_pos(node_orig, tab, cubes.Position(1, 0, 0), (1, 0, 0))
+        node_orig.add_pos(tab, Position(1, 0, 0), (1, 0, 0))
         self.assertEqual(2, len(tab))
         self.assertEqual(2, tab[0].x)
         self.assertEqual(0, tab[0].y)
@@ -55,11 +57,11 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(0, tab[1].z)
 
         tab = []
-        cubes.add_pos(node_orig, tab, cubes.Position(0, 0, 0), (-1, 0, 0))
+        node_orig.add_pos(tab, Position(0, 0, 0), (-1, 0, 0))
         self.assertEqual(0, len(tab), "len minus x")
 
         tab = []
-        cubes.add_pos(node_orig, tab, cubes.Position(0, 1, 0), (0, 1, 0))
+        node_orig.add_pos(tab, Position(0, 1, 0), (0, 1, 0))
         self.assertEqual(2, len(tab))
         self.assertEqual(0, tab[0].x)
         self.assertEqual(2, tab[0].y)
@@ -69,7 +71,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(0, tab[1].z)
 
         tab = []
-        cubes.add_pos(node_orig, tab, cubes.Position(0, 0, 1), (0, 0, 1))
+        node_orig.add_pos(tab, Position(0, 0, 1), (0, 0, 1))
         self.assertEqual(2, len(tab))
         self.assertEqual(0, tab[0].x)
         self.assertEqual(0, tab[0].y)
@@ -79,53 +81,48 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(3, tab[1].z)
 
         tab = []
-        cubes.add_pos(node_orig, tab, cubes.Position(0, 0, 0), (0, 0, -1))
+        node_orig.add_pos(tab, Position(0, 0, 0), (0, 0, -1))
         self.assertEqual(0, len(tab), "len minus z")
 
     def test_add_base(self):
-        # TODO:
+        node_orig = Node(cube_orig, [])
         tab = []
-        cubes.add_base(node_orig, tab, cubes.Position(0, 0, 0), (1, 0, 0), 0)
+        node_orig.add_base(tab, Position(0, 0, 0), (1, 0, 0), 0)
         self.assertEqual(0, len(tab), "len add 0 x out of boundaries")
         tab = []
-        cubes.add_base(node_orig, tab, cubes.Position(1, 1, 1), (1, 0, 0), 0)
+        node_orig.add_base(tab, Position(1, 1, 1), (1, 0, 0), 0)
         self.assertEqual(1, len(tab), "len add 1 x")
         self.assertEqual(1, tab[0].x)
         self.assertEqual(0, tab[0].y)
         self.assertEqual(1, tab[0].z)
         tab = []
-        cubes.add_base(node_orig, tab, cubes.Position(1, 1, 1), (0, 1, 0), 1)
+        node_orig.add_base(tab, Position(1, 1, 1), (0, 1, 0), 1)
         self.assertEqual(1, len(tab), "len add 1 x")
         self.assertEqual(2, tab[0].x)
         self.assertEqual(1, tab[0].y)
         self.assertEqual(1, tab[0].z)
         tab = []
-        cubes.add_base(node_orig, tab, cubes.Position(1, 1, 1), (0, 0, 1), 2)
+        node_orig.add_base(tab, Position(1, 1, 1), (0, 0, 1), 2)
         self.assertEqual(1, len(tab), "len add 1 x")
         self.assertEqual(1, tab[0].x)
         self.assertEqual(0, tab[0].y)
         self.assertEqual(1, tab[0].z)
-        print("add base")
-        print(tab[0])
 
-    def test_generate_simple_t(self):
-        print("generate simple T")
-        node = cubes.Node(cube_orig, [])
+    def test_free_in_cube(self):
+        node_orig = Node(cube_test, [])
+        self.assertTrue(node_orig.free_in_cube(Position(0, 0, 0)), "0, 0, 0")
+        self.assertFalse(node_orig.free_in_cube(Position(0, 0, 1)), "0, 0, 1")
+        self.assertTrue(node_orig.free_in_cube(Position(2, 2, 2)), "2, 2, 2")
+        self.assertFalse(node_orig.free_in_cube(Position(-1, 0, 0)), "-1, 0, 0")
+        self.assertFalse(node_orig.free_in_cube(Position(0, -1, 0)), "0, -1, 0")
+        self.assertFalse(node_orig.free_in_cube(Position(0, 0, -1)), "0, 0, -1")
+        self.assertFalse(node_orig.free_in_cube(Position(len(node_orig.cube), 0, 1)), "max, 0, 1")
 
-        piece = cubes.generate_t(node, cubes.Position(0, 0, 0), 0, 0)
-        self.assertEqual(None, piece)
+    def test_impact_form_on_cube(self):
+        self.assertTrue(True)
 
-        piece = cubes.generate_t(node, cubes.Position(0, 0, 0), 1, 0)
-        self.assertEqual(None, piece)
+    def test_found_position(self):
+        self.assertTrue(True)
 
-        piece = cubes.generate_t(node, cubes.Position(0, 0, 0), 1, 1)
-        # self.assertEqual(None, piece)
-        # TODO:
-        print(piece)
-
-
-
-
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_add_next_steps(self):
+        self.assertTrue(True)

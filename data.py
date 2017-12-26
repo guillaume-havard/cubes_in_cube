@@ -1,11 +1,7 @@
 import copy
 
 
-class Node:
-    def __init__(self, cube, forms):
-        self.children = []
-        self.cube = copy.deepcopy(cube)
-        self.forms = list(forms)
+
 
 
 class Position:
