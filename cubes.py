@@ -58,20 +58,12 @@ cube_orig_4_1 = [
 nb_good_pieces_4_1 = 4
 
 
-
-
-def count_nodes(root):
-    nb_nodes = 1
-    for node in root.children:
-        nb_nodes += count_nodes(node)
-
-    return nb_nodes
-
-
 if __name__ == '__main__':
 
     to_do = [node.Node(cube_orig_6_6_2, [])]
     nb_good_pieces = nb_good_pieces_6_6_2
+    GUI_SQUARE_SIZE = 20
+    GUI_LEVEL_DIST = 6 * GUI_SQUARE_SIZE + GUI_SQUARE_SIZE
 
     cpt = 0
     res = None
@@ -110,8 +102,9 @@ if __name__ == '__main__':
 
     app = interface.Application()  # Instantiate the application class
     app.master.title("Les cubes dans le cube")
+    app.init_canvas(2 * GUI_LEVEL_DIST, 6 * GUI_SQUARE_SIZE)
 
-    app.draw_forms(res.forms)
+    app.draw_forms(res.forms, GUI_LEVEL_DIST, GUI_SQUARE_SIZE)
 
     app.mainloop()  # Wait for events
 
